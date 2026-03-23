@@ -1,0 +1,11 @@
+# Ignorando arquivos do Go
+bin/
+vendor/
+
+# Ignorando arquivos de testes e cache
+*.test
+*.log
+
+# Ignorando arquivos de configuração locais
+.idea/
+.vscode/

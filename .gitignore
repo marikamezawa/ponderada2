@@ -1,0 +1,159 @@
+# ============================================================
+#  .gitignore — Go + Docker (+ universais)
+# ============================================================
+
+# ------------------------------------------------------------
+# Go
+# ------------------------------------------------------------
+# Binários compilados
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Diretório de saída de build
+bin/
+dist/
+out/
+
+# Arquivos de teste e cobertura
+*.test
+*.out
+coverage.txt
+coverage.html
+*.coverprofile
+
+# Cache do Go
+.cache/
+
+# Módulos vendor (opcional — remova se versionar vendor/)
+vendor/
+
+# Workspace files
+go.work.sum
+
+# Profiling
+*.prof
+*.pprof
+cpu.out
+mem.out
+
+# ------------------------------------------------------------
+# Docker
+# ------------------------------------------------------------
+# Arquivos de override locais
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Diretórios de dados montados em volumes
+.docker/
+docker-data/
+volumes/
+data/
+
+# Certificados gerados localmente
+certs/
+*.pem
+*.crt
+*.key
+*.p12
+*.pfx
+
+# ------------------------------------------------------------
+# Variáveis de ambiente e segredos
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.sample
+*.secret
+secrets/
+*.pem
+
+# ------------------------------------------------------------
+# IDEs e editores
+# ------------------------------------------------------------
+# VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# JetBrains (GoLand, IntelliJ…)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Vim / Neovim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ------------------------------------------------------------
+# Sistema operacional
+# ------------------------------------------------------------
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.nfs*
+
+# ------------------------------------------------------------
+# Logs e temporários
+# ------------------------------------------------------------
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+logs/
+
+# ------------------------------------------------------------
+# Ferramentas de CI/CD e cloud
+# ------------------------------------------------------------
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+!*.tfvars.example
+.terraformrc
+
+# Kubernetes (kubeconfig local)
+kubeconfig
+kubeconfig.*
+!kubeconfig.example
+
+# ------------------------------------------------------------
+# Testes e qualidade
+# ------------------------------------------------------------
+# Relatórios de lint
+.golangci-cache/
+report.xml
+junit.xml
+
+# Benchmarks
+*.bench
