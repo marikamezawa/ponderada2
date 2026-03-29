@@ -3,10 +3,12 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	_ "github.com/lib/pq"
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -39,17 +41,29 @@ func newPostgreSQL() (*PostgreSQL, error) {
 		url = "postgres://admin:secret@localhost:5432/appdb?sslmode=disable"
 	}
 
-	db, err := sql.Open("postgres", url)
-	if err != nil {
-		return nil, err
+	const maxRetries = 10
+	const retryDelay = 3 * time.Second
+
+	for attempt := 1; attempt <= maxRetries; attempt++ {
+		db, err := sql.Open("postgres", url)
+		if err != nil {
+			log.Printf("tentativa %d/%d — erro ao abrir conexão: %v", attempt, maxRetries, err)
+			time.Sleep(retryDelay)
+			continue
+		}
+
+		if err := db.Ping(); err != nil {
+			db.Close()
+			log.Printf("tentativa %d/%d — banco ainda não disponível: %v — aguardando %s...", attempt, maxRetries, err, retryDelay)
+			time.Sleep(retryDelay)
+			continue
+		}
+
+		log.Println("conectado ao PostgreSQL!")
+		return &PostgreSQL{db: db}, nil
 	}
 
-	if err := db.Ping(); err != nil {
-		return nil, err
-	}
-
-	log.Println("conectado ao PostgreSQL!")
-	return &PostgreSQL{db: db}, nil
+	return nil, fmt.Errorf("não foi possível conectar ao PostgreSQL após %d tentativas", maxRetries)
 }
 
 func (p *PostgreSQL) save(t Telemetry) error {
